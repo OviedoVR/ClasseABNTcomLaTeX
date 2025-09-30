@@ -1,0 +1,253 @@
+---
+title: "Classe ABNT com LaTeX (do zero)"
+author: "Vinícius Oviedo"
+date: today
+lang: "pt-BR"
+format:
+  bookup-html+lightonly:
+    embed-fonts: true
+    toc: true
+---
+
+# Escopo
+
+| **Tópico**             | **Tarefas/descrição**                               | 
+|------------------------|-----------------------------------------------------|
+| Criação da estrutura   | Classe base e novo cls                              |
+| Formatação básica      | Encoding, idioma, espaçamento, fonte, indent        |
+| Pagestyle              | Margens                                             |
+| Secoes                 | Estilo e titlespacing                               |
+| Floats e captions      | pacotes, quadro e fignote, tabenote                 |
+| Math                   | pacotes                                             |
+| URL/Hyperlinks         | pacotes e hypersetup                                |
+| Citações               | abntex2cite                                         |
+| Elementos pré-textuais | Capa, contracapa, agradecimentos, lista de símbolos |
+| Macros                 | Variaveis e automacoes                              |
+| TOC, LOF, LOT, LOQ     | tocloft                                             |
+
+# Elementos Textuais
+
+## Criação da estrutura
+
+::: {.callout-tip title="Dica"}
+Antes de criar os arquivos e o template em si, é interessante estruturar o projeto em pastas. Um exemplo:
+
+- ./figuras/
+- ./template/
+- ./conteudo/
+- ./pretextual/
+:::
+
+Dentro da pasta `./template`, vamos informar:
+
+```latex
+% -- Identificação do template:
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{./template/<nomeDoTemplate>}
+% Classe base:
+\LoadClass[a4paper,oneside,12pt]{article}
+```
+
+::: {.callout-note title="Nota"}
+No momento de carregar essa classe com o comando `\documentclass`, é importante informar o diretório.
+:::
+
+```latex
+\documentclass{./template/<nomeDoTemplate>}
+```
+
+## Formatação básica
+
+A formatação básica compreende **codificação**, **idioma**, **espaçamento**, **indentação** de parágrafos, **fonte** e **margens**. No `.cls`, utilizaremos `\RequirePackage` em vez do comando `\usepackage` (comumente utilizado no preâmbulo de um arquivo `.tex`)
+
+```latex
+% -- Formatação básica:
+\RequirePackage[utf8]{inputenc} % codificação
+\RequirePackage[T1]{fontenc} % codificação
+\RequirePackage[english,brazil]{babel} % idiomas (último: principal)
+\RequirePackage{setspace} % pacote espaçamento
+\onehalfspacing % espaçamento 1.5
+\setlength{\parindent}{1.25cm} % indentação parágrafo
+\setlength{\parskip}{0.2cm} % espaço parágrafos
+\RequirePackage{indentfirst} % indenta o primeiro \par
+\RequirePackage{times} % fonte: Times New Roman
+\RequirePackage[
+  left=3cm,
+  top=3cm,
+  right=2cm,
+  bottom=2cm
+]{geometry} % margens
+\RequirePackage[all,defaultlines=3]{nowidow} % reduz linhas órfãs
+```
+
+## Estilo de página (header/footer)
+
+Para o estilo da página, podemos criar um novo `pagestyle` com o pacote `fancyhdr`. No nosso caso, precisamos limpar o estilo padrão, configurar a numeração da página e retirar a linha padrão que vem no cabeçalho.
+
+```latex
+% -- Estilo de página:
+\RequirePackage{fancyhdr} % estilo próprio
+\fancypagestyle{abnt}{
+  \fancyhf{} 
+  \fancyhead[R]{\footnotesize\thepage}  % pagina na direita (topo)
+  \renewcommand{\headrulewidth}{0pt} % sem linha no header
+}
+\pagestyle{abnt} % aplica como pagestyle principal
+```
+
+## Títulos
+
+Para customizar os títulos (**seções**, **subseções**), utilizaremos o pacote `titlesec`. Quanto ao estilo, podemos utilizar:
+
+```latex
+\titleformat{\section}{<formato título>}{<formato num.>}{<espaço num./título>}{}
+% e 
+\titlespacing{<título>}{<espaço esquerda>}{<espaço antes>}{<espaço após>}
+```
+
+```latex
+% -- Títulos:
+\RequirePackage{titlesec}
+% Formato:
+\titleformat{\section} % Seção
+  {\bfseries\MakeUppercase}{\thesection}{0.5em}{}
+\titleformat{\subsection} % Subseção
+  {\MakeUppercase}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection} % Sub-subseção
+  {\bfseries}{\thesubsubsection}{0.5em}{}
+% Espaçamento (títulos):
+\titlespacing{\section}{0pt}{12pt}{12pt}
+\titlespacing{\subsection}{0pt}{12pt}{6pt}
+\titlespacing{\subsubsection}{0pt}{21pt}{6pt}
+```
+
+
+## Floats e legendas
+
+No caso dos *floats* (figuras e tabelas), podemos carregar pacotes base e aqueles que eventualmente podemos precisar (e.g., longtable).
+
+```latex
+% -- Floats:
+\RequirePackage{float} % posicionamento
+\RequirePackage{graphicx} % figuras
+\RequirePackage{booktabs} % linhas horizontais
+\RequirePackage{multirow,multicol} % células mescladas
+\RequirePackage{adjustbox} % ajuste ao texto
+\RequirePackage{longtable} % tabela múlti-páginas 
+\RequirePackage[flushleft]{threeparttable} % notas tabulares
+\RequirePackage{tabularx}
+\renewcommand{\arraystretch}{1.5} % espaçamento tabelas
+```
+
+Se precisarmos criar colunas com tamanho especificado (estilo `p{<medida>}`) mas alinhado ao centro ou à direita, o pacote `array` é bem útil.
+
+```latex
+\RequirePackage{array} % novos estilos de coluna
+% Coluna alinha ao centro (dimensão especificada):
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}} 
+% Coluna alinha à esquerda (dimensão especificada):
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+% Coluna alinha à direita (dimensão especificada):
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}
+```
+
+Já as legendas, podemos configurar de maneira global, ou separadamente para figuras e tabelas. Dessa forma, podemos alterar o estilo da fonte dos termos **Figura** e **Tabela**; o separador; o tamanho da fonte e o espaço entre caption e figura/tabela.
+
+```latex
+% -- Legendas:
+\RequirePackage{caption}
+\captionsetup[figure]{labelfont=bf,labelsep=endash,size=small,skip=6pt}
+\captionsetup[table]{labelfont=bf,labelsep=endash,size=small,skip=6pt}
+```
+
+Se necessário, podemos criar o ambiente **quadro** (segundo a ABTN, tabelas com todas as bordas verticais e horizontais são denominadas quadros).
+
+```latex
+% Definir um novo tipo de float chamado 'quadro'
+\floatstyle{plaintop}
+\newfloat{quadro}{!ht}{lop}
+\floatname{quadro}{Quadro}
+% Configurar a lista de quadros
+\newcommand{\listofquadros}{
+  \listof{quadro}{Lista de Quadros}
+}
+```
+
+## Pacotes matemáticos
+
+Aqui entram pacotes-base e uma fonte para elementos matemáticos.
+
+```latex
+% -- Pacotes matemáticos:
+\RequirePackage{amsmath,amssymb,amsfonts} % base
+\RequirePackage{mathptmx} % fonte matemática
+```
+
+## URLs e hyperlinks
+
+Antes de configurar URLs e hiperlinks é importante carregar um pacote para o uso de cores `xcolor`. Assim, também é possível definir uma cor com base no código HTML ou RGB. Vejamos um exemplo com HTML:
+
+```latex
+\RequirePackage[dvipsnames]{xcolor} % pacote
+\definecolor{indigo}{HTML}{3F00FF} % cor indigo (usar no comando \color)
+```
+
+Feito isso, podemos definir as configurações.
+
+```latex
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{url}
+\urlstyle{same}
+\RequirePackage[hidelinks]{hyperref}
+\hypersetup{
+  colorlinks=True,
+  citecolor=black,
+  linkcolor=black,
+  filecolor=black,
+  urlcolor=blue
+}
+```
+
+## Citações
+
+Para as citações e referências, vamos utilizar o pacote `abntex2cite`.
+
+```latex
+% -- Citações e referências:
+\RequirePackage[
+  alf,
+  abnt-repeated-title-omit=yes,
+  abnt-emphasize=bf,
+  abnt-etal-list=0
+]{abntex2cite}
+\citebrackets()
+\bibliographystyle{abntex2-alf}
+```
+
+Ao longo do texto, podemos utilizar algumas variações do comando `\cite`.
+
+| Comando | Resultado |
+| ------- | --------- |
+| `\cite{Oviedo2023}` | (Oviedo *et al*., 2023) |
+| `\citeonline{Oviedo2023}` | Oviedo *et al*. (2023) |
+| `\citeauthor{Oviedo2023}` | Oviedo *et al*. |
+| `\citeyear{Oviedo2023}` | 2023 |
+
+
+# Elementos pré-textuais
+
+## Resumo
+
+## Sumário, Lista de Figuras, Lista de Tabelas e Lista de Quadros
+
+## Lista de abreviaturas/siglas
+
+## Capa
+
+
+# Informações sobre o autor
+---
+
+**Vinícius Oviedo** | Data Analyst & LaTeX editor
+
+[![GitHub Badge](https://img.shields.io/badge/-GitHub-black?&logo=GitHub&link=https://github.com/OviedoVR)](https://www.github.com/OviedoVR) [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-0A66C2?&logo=Linkedin&link=https://www.linkedin.com/in/vinicius-oviedo/)](https://www.linkedin.com/in/vinicius-oviedo/) [![Medium Badge](https://img.shields.io/badge/-Medium-black?&logo=Medium&link=https://medium.com/@vo.freelancer5)](https://medium.com/@vo.freelancer5/) [![Youtube Badge](https://img.shields.io/badge/-Youtube-red?&logo=YouTube&link=www.youtube.com/channel/UCRc8ff3KUnY47j5sLJHDzSQ)](https://www.youtube.com/channel/UCRc8ff3KUnY47j5sLJHDzSQ) [![Fiverr Badge](https://img.shields.io/badge/-Fiverr_profile-charcoal?&link=https://www.fiverr.com/freelancer_vo)](https://www.fiverr.com/freelancer_vo) [![Upwork Badge](https://img.shields.io/badge/-Upwork_profile-gray?&logo=Upwork&link=https://www.upwork.com/freelancers/~0159ceec532c3ee8ae)](https://www.upwork.com/freelancers/~0159ceec532c3ee8ae)
