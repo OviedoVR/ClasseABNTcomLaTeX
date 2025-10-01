@@ -236,13 +236,111 @@ Ao longo do texto, podemos utilizar algumas variações do comando `\cite`.
 
 # Elementos pré-textuais
 
+Antes de darmos início aos elementos pré-textuais, podemos criar variáveis de preâmbulos, novos comandos ou novos ambientes. Dessa forma, informações que tendem a repetir podem ser informadas uma única vez no preâmbulo. Assim, temos:
+
+```latex
+\makeatletter
+\def \Titulo#1{\def\@Titulo{#1}}
+\def \@Titulo {} % inicia vazio
+\makeatother
+```
+
+Agora, informando no preâmbulo, podemos automatizar as informações de uma capa:
+
+```latex
+\begin{center}
+    % Pode-se adicionar uma logo com \includegraphics
+    \MakeUppercase{\textbf{Universidade}}\\
+    \MakeUppercase{Departamento}\\
+    Programa
+
+
+    \vspace*{7.5cm}
+    \MakeUppercase{\textbf{Autor}}
+
+    \vspace*{2cm}
+
+    \MakeUppercase{\textbf{Título}}
+
+    \vfill
+    Cidade, estado\\
+    2025    
+\end{center}
+\clearpage
+```
+
+Da mesma forma, para uma contracapa:
+
+```latex
+\begin{center}
+
+\large{\textbf{Autor}}
+
+\vspace{2.5cm}
+
+\MakeUppercase{\textbf{Título}}
+
+\vspace{3cm}
+
+\begin{flushright}
+\begin{minipage}[r]{9.05cm}
+Projeto de dissertação apresentado ao Programa de Pós-Graduação em X da Universidade Y, Cidade - Estado (Sigla), como requisito para obtenção do título de Mestre/Doutor.
+\end{minipage}
+\end{flushright}
+
+\vspace{4cm}
+
+Orientador (a): Prof. Dr.
+
+Coorientador (a): Prof. Dr.
+
+\vfill
+
+Cidade, Estado\\
+2025
+\clearpage
+\end{center}
+```
+
+Para isso basta criar utilizar `\@Titulo` ao invés de **"Título"** e criar comandos para imprimir as duas páginas. Com isso, podemos usar:
+
+```latex
+% supondo que os comandos foram criados previamente
+AtBeginDocument{
+  \printCapa
+  \printContracapa
+}
+```
+
 ## Resumo
+
+No caso do Resumo podemos utilizar o ambiente `abstract` (redefinindo o estilo do título) e criar um novo comando para as palavras-chave (lembrando de usar o `noindent`).
+
+```latex
+% -- Resumo e palavras-chave:
+\addto\captionsbrazil{
+  \renewcommand{\abstractname}{\textbf{\MakeUppercase{Resumo}}}
+}
+\newcommand{\kewywords}[1]{
+  \bigskip\noindent\textbf{Palavras-chave:}~#1
+}
+```
+
+Assim, o resumo fica:
+
+```latex
+\begin{abstract}
+    \noindent
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean fauci bus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+
+    \kewywords{KW1, KW2, KW3.}
+\end{abstract}
+```
 
 ## Sumário, Lista de Figuras, Lista de Tabelas e Lista de Quadros
 
 ## Lista de abreviaturas/siglas
 
-## Capa
 
 
 # Informações sobre o autor
