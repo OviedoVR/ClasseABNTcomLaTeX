@@ -9,25 +9,8 @@ format:
     toc: true
 ---
 
-# Escopo
+# Criação da estrutura
 
-| **Tópico**             | **Tarefas/descrição**                               | 
-|------------------------|-----------------------------------------------------|
-| Criação da estrutura   | Classe base e novo cls                              |
-| Formatação básica      | Encoding, idioma, espaçamento, fonte, indent        |
-| Pagestyle              | Margens                                             |
-| Secoes                 | Estilo e titlespacing                               |
-| Floats e captions      | pacotes, quadro e fignote, tabenote                 |
-| Math                   | pacotes                                             |
-| URL/Hyperlinks         | pacotes e hypersetup                                |
-| Citações               | abntex2cite                                         |
-| Elementos pré-textuais | Capa, contracapa, agradecimentos, lista de símbolos |
-| Macros                 | Variaveis e automacoes                              |
-| TOC, LOF, LOT, LOQ     | tocloft                                             |
-
-# Elementos Textuais
-
-## Criação da estrutura
 
 ::: {.callout-tip title="Dica"}
 Antes de criar os arquivos e o template em si, é interessante estruturar o projeto em pastas. Um exemplo:
@@ -55,6 +38,8 @@ No momento de carregar essa classe com o comando `\documentclass`, é importante
 ```latex
 \documentclass{./template/<nomeDoTemplate>}
 ```
+
+# Elementos Textuais
 
 ## Formatação básica
 
@@ -91,6 +76,7 @@ Para o estilo da página, podemos criar um novo `pagestyle` com o pacote `fancyh
   \fancyhf{} 
   \fancyhead[R]{\footnotesize\thepage}  % pagina na direita (topo)
   \renewcommand{\headrulewidth}{0pt} % sem linha no header
+  \setlength{\headsep}{12pt}
 }
 \pagestyle{abnt} % aplica como pagestyle principal
 ```
@@ -164,13 +150,20 @@ Se necessário, podemos criar o ambiente **quadro** (segundo a ABTN, tabelas com
 
 ```latex
 % Definir um novo tipo de float chamado 'quadro'
-\floatstyle{plaintop}
-\newfloat{quadro}{!ht}{lop}
-\floatname{quadro}{Quadro}
-% Configurar a lista de quadros
-\newcommand{\listofquadros}{
-  \listof{quadro}{Lista de Quadros}
-}
+\RequirePackage{newfloat}
+% Definição do novo float "quadro"
+\DeclareFloatingEnvironment[
+    fileext=lod,
+    listname={Lista de Quadros},
+    name=Quadro,
+    placement=htbp
+]{quadro}
+```
+
+Lembremos de definir um estilo para a legenda do quadro: 
+
+```latex
+\captionsetup[quadro]{labelfont=bf,labelsep=endash,size=small,skip=6pt}
 ```
 
 ## Pacotes matemáticos
@@ -222,6 +215,10 @@ Para as citações e referências, vamos utilizar o pacote `abntex2cite`.
 ]{abntex2cite}
 \citebrackets()
 \bibliographystyle{abntex2-alf}
+% citação direta:
+\newenvironment{cited}
+{\vspace{12pt}\hfill\begin{minipage}{12cm}}
+{\end{minipage}\vspace{12pt}}
 ```
 
 Ao longo do texto, podemos utilizar algumas variações do comando `\cite`.
@@ -339,8 +336,117 @@ Assim, o resumo fica:
 
 ## Sumário, Lista de Figuras, Lista de Tabelas e Lista de Quadros
 
+Aqui é um copia e cola mesmo, a desvantagem é a limitação ao editar a lista de quadros.
+
+```latex
+% -- TOC, LOT, LOF, LOQ:
+\RequirePackage{tocloft} % Pacote base
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+% Sumário:
+\renewcommand\cfttoctitlefont{\hfil\centering\bfseries\MakeUppercase}
+%Seção:
+\setlength{\cftsecindent}{0pt}       % sem recuo
+\setlength{\cftsecnumwidth}{3.25em}     % espaço reservado p/ número da seção
+%Subseção:
+\setlength{\cftsubsecindent}{0pt}
+\setlength{\cftsubsecnumwidth}{3.25em} 
+%Subsubseção:
+\setlength{\cftsubsubsecindent}{0pt}
+\setlength{\cftsubsubsecnumwidth}{3.25em} 
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % Define dots para as seções
+
+% Lista de Tabelas:
+\renewcommand\cftlottitlefont{\hfil\centering\bfseries\MakeUppercase}
+\setlength{\cfttabindent}{0pt}
+\renewcommand{\cfttabpresnum}{\bfseries Tabela~}
+\setlength{\cfttabnumwidth}{5.1em}
+\renewcommand{\cfttabfont}{\normalfont}
+\renewcommand{\cfttabpagefont}{\normalfont}
+\renewcommand{\cfttabaftersnum}{\ -- \ }
+% Lista de Figuras:
+\renewcommand\cftloftitlefont{\hfil\centering\bfseries\MakeUppercase}
+\setlength{\cftfigindent}{0pt}
+\renewcommand{\cftfigpresnum}{\bfseries Figura~}
+\setlength{\cftfignumwidth}{5.1em}
+\renewcommand{\cftfigfont}{\normalfont}
+\renewcommand{\cftfigpagefont}{\normalfont}
+\renewcommand{\cftfigaftersnum}{\ -- \ }
+```
+
 ## Lista de abreviaturas/siglas
 
+Nesse caso, vamos configurar com o pacote `nomencl`.
+
+```latex
+% -- Configuração da Nomenclatura/Silgas
+\RequirePackage{nomencl}
+\makenomenclature
+\renewcommand{\nomname}{\hfil Lista de abreviaturas e siglas}
+\setlength{\nomitemsep}{0pt}
+\setlength{\nomitemsep}{-\parsep} 
+\setlength{\nomlabelwidth}{5em} % espaço reservado para a sigla
+```
+
+Dessa maneira, podemos criar um arquivo `siglas.tex` no diretório dos elementos pré-textuais.
+
+```latex
+% Lista de abreviaturas:
+\nomenclature{QOD}{Quasi-one-dimension}
+\nomenclature{SIGLA}{Descrição}
+\nomenclature{SIGLA}{Descrição}
+\nomenclature{SIGLA}{Descrição}
+\printnomenclature
+```
+
+E carregar via `\input`:
+
+```latex
+\input{pretextual/siglas}
+```
+
+Com tudo isso, podemos automatizar para aparecer logo após iniciar o ambiente `Document`:
+
+```latex
+% no cls:
+\AtBeginDocument{
+    % Sem numeração
+    \pagenumbering{gobble}
+    %
+    \printCapa
+    \printContraCapa
+}
+```
+
+Já no arquivo `.tex` principal, teremos:
+
+```latex
+\begin{document}
+
+% ---- Pré-Textual -----
+%
+\input{pretextual/resumo}
+\clearpage
+\input{pretextual/siglas}
+\clearpage
+\tableofcontents
+\clearpage
+\listoftables
+\clearpage
+\listoffigures
+\clearpage
+\listofquadro
+\clearpage
+% Com numeração
+\pagenumbering{arabic}
+%
+%
+% ---- Textual -----
+\section{Introdução}
+...
+
+\end{document}
+```
 
 
 # Informações sobre o autor

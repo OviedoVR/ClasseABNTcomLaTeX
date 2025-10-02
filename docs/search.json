@@ -4,91 +4,7 @@
     "href": "index.html",
     "title": "Classe ABNT com LaTeX (do zero)",
     "section": "",
-    "text": "Tópico\nTarefas/descrição\n\n\n\n\nCriação da estrutura\nClasse base e novo cls\n\n\nFormatação básica\nEncoding, idioma, espaçamento, fonte, indent\n\n\nPagestyle\nMargens\n\n\nSecoes\nEstilo e titlespacing\n\n\nFloats e captions\npacotes, quadro e fignote, tabenote\n\n\nMath\npacotes\n\n\nURL/Hyperlinks\npacotes e hypersetup\n\n\nCitações\nabntex2cite\n\n\nElementos pré-textuais\nCapa, contracapa, agradecimentos, lista de símbolos\n\n\nMacros\nVariaveis e automacoes\n\n\nTOC, LOF, LOT, LOQ\ntocloft"
-  },
-  {
-    "objectID": "index.html#objetivo",
-    "href": "index.html#objetivo",
-    "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "",
-    "text": "Tópico\nTarefas/descrição\n\n\n\n\nCriação da estrutura\nClasse base e novo cls\n\n\nFormatação básica\nEncoding, idioma, espaçamento, fonte, indent\n\n\nPagestyle\nMargens\n\n\nSecoes\nEstilo e titlespacing\n\n\nFloats e captions\npacotes, quadro e fignote, tabenote\n\n\nMath\npacotes\n\n\nURL/Hyperlinks\npacotes e hypersetup\n\n\nCitações\nabntex2cite\n\n\nElementos pré-textuais\nCapa, contracapa, agradecimentos, lista de símbolos\n\n\nMacros\nVariaveis e automacoes\n\n\nTOC, LOF, LOT, LOQ\ntocloft"
-  },
-  {
-    "objectID": "index.html#utilizando-um-custom-layout",
-    "href": "index.html#utilizando-um-custom-layout",
-    "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "Utilizando um custom layout",
-    "text": "Utilizando um custom layout\nO plotly vem com uma série de opções padrões e templates no que tange ao aspecto layout - para mais informações, ver documentação oficial. Pensando em implementar um deisgn próprio, podemos carregar o arquivo custom_layout.py disponível no link abaixo. Basicamente, este arquivo contém configurações quanto a fontes, eixos, paleta de cores, marcadores, etc.\n\n\n\n\n\n\nDica\n\n\n\nAntes de criar os arquivos e o template em si, é interessante estruturar o projeto em pastas. Um exemplo:\n\n./Figuras/\n./Template/\n./Conteudo/\n./PreTextual/\n\n\n\nAntes de plotar qualquer gráfico, vamos carregas as bibliotecas necessárias.\n# -- Manipulação de dados:\nimport pandas as pd\n\n# -- Visualização:\nimport seaborn as sns\nimport plotly.express as px\n# Layout customizado\nfrom custom_layout import *\n\n\n\n\n\n\nNota\n\n\n\nSe você estiver rodando na sua máquina ou em ferramentas online como o Google Colab, não é necessário executar o próximo bloco de código."
-  },
-  {
-    "objectID": "index.html#gráfico-de-linhas",
-    "href": "index.html#gráfico-de-linhas",
-    "title": "Visualização de dados com Plotly",
-    "section": "1. Gráfico de linhas",
-    "text": "1. Gráfico de linhas\nAdicionando datas sequenciais para plotar um série temporal:\n\n# Defina a data de início\nstart_date = '2024-01-01'\n\n# Gere uma série de datas sequenciais\ntips['date'] = pd.date_range(start=start_date, periods=244) \ntips_time_series = tips.tail(30)\n\nVisualização:\n\n# Criando o gráfico:\nfig = px.line(\n    tips_time_series,\n    x='date',\n    y='tip',\n    color='sex',\n    color_discrete_sequence = ['silver', '#673147']\n)\n\n# Configurando layout e título:\nfig.update_layout(\n    custom_layout,\n    title='&lt;b&gt;Tips by date and gender&lt;b&gt;',\n    title_x=0.1\n)\n\n# Resultado:\nfig.show()\n\n                                                \n\n\nSuavizando as linhas do gráfico:\n\n# Criando o gráfico:\nfig = px.line(\n    tips_time_series,\n    x='date',\n    y='tip',\n    color='sex',\n    color_discrete_sequence = ['silver', '#673147']\n)\n\n# Suavizando as linhas:\nfor trace in fig.data:\n  trace.update(mode='lines+markers', line_shape='spline')\n\n# Configurando layout e título:\nfig.update_layout(\n    custom_layout,\n    title='&lt;b&gt;Tips by date and gender&lt;b&gt;',\n    title_x=0.1\n)\n\n# Resulado:\nfig.show()"
-  },
-  {
-    "objectID": "index.html#gráfico-de-barras",
-    "href": "index.html#gráfico-de-barras",
-    "title": "Visualização de dados com Plotly",
-    "section": "2. Gráfico de barras",
-    "text": "2. Gráfico de barras\n\n# Craindo o gráfico:\nfig = px.bar(\n    tips,\n    x='tip',\n    y='sex',\n    color_discrete_sequence = ['#673147']\n)\n \n# Layout e tamanho: \nfig.update_traces(marker_line_width = 0) # sem sub-linhas\nfig.update_layout(custom_layout, width=500, height=220)\n\n# Resultado:\nfig.show()\n\n                                                \n\n\n\nModo da barra: group (agrupado)\n\n\n# Craindo o gráfico:\nfig = px.bar(\n    tips,\n    x='tip',\n    y='sex',\n    color='time',\n    barmode='group',\n    color_discrete_sequence = ['silver', '#673147']\n)\n \n# Layout e tamanho:\nfig.update_traces(marker_line_width = 0) # sem sub-linhas\nfig.update_layout(custom_layout, width=500, height=220)\n\n# Resultado:\nfig.show()\n\n                                                \n\n\n\nModo da barra: stack (empilhado)\n\n\n# Craindo o gráfico:\nfig = px.bar(\n    tips,\n    x='tip',\n    y='sex',\n    color='time',\n    barmode='stack',\n    color_discrete_sequence = ['silver', '#673147']\n)\n \n# Layout e tamanho:\nfig.update_traces(marker_line_width = 0) # sem sub-linhas\nfig.update_layout(custom_layout, width=500, height=220)\n\n# Resultado:\nfig.show()"
-  },
-  {
-    "objectID": "index.html#gráfico-de-dispersão",
-    "href": "index.html#gráfico-de-dispersão",
-    "title": "Visualização de dados com Plotly",
-    "section": "3. Gráfico de dispersão",
-    "text": "3. Gráfico de dispersão\n\n# Criando o gráfico:\nfig = px.scatter(\n  tips,\n  x='total_bill',\n  y='tip',\n  color_discrete_sequence = ['#673147']\n)\n\n# Layout:\nfig.update_layout(\n  custom_layout,\n  title='&lt;b&gt;Total bill versus tip&lt;b&gt;',\n  title_x=0.1\n)\n# Layout dos marcadores:\nfig.update_traces(marker=custom_marker_style)\n\n# Resultado:\nfig.show() \n\n                                                \n\n\nCom mais de uma categoria:\n\n# Criando o gráfico:\nfig = px.scatter(\n  tips,\n  x='total_bill',\n  y='tip',\n  size='total_bill',\n  color = 'time',\n  color_discrete_sequence = ['silver', '#673147']\n)\n\n# Layout:\nfig.update_layout(\n  custom_layout,\n  title='&lt;b&gt;Total bill versus tip, hued by time&lt;b&gt;',\n  title_x=0.1\n)\n# Layout dos marcadores:\nfig.update_traces(marker=custom_marker_style)\n\n# Resultado:\nfig.show()"
-  },
-  {
-    "objectID": "index.html#histograma",
-    "href": "index.html#histograma",
-    "title": "Visualização de dados com Plotly",
-    "section": "4. Histograma",
-    "text": "4. Histograma\n\n# Criando o gráfico\nfig = px.histogram(\n    tips,\n    x='tip',\n    color='sex',\n    color_discrete_sequence = ['silver', '#673147'],\n)\n\n# Layout e título:\nfig.update_layout(\n    custom_layout,\n    title='&lt;b&gt;Tips by gender&lt;b&gt;', \n    title_x=0.1\n)\n\n# Resultado:\nfig.show()"
-  },
-  {
-    "objectID": "index.html#boxplot",
-    "href": "index.html#boxplot",
-    "title": "Visualização de dados com Plotly",
-    "section": "5. Boxplot",
-    "text": "5. Boxplot\n\n# Criando o gráfico\nfig = px.box(\n    tips,\n    y='tip',\n    color='sex',\n    color_discrete_sequence = ['silver', '#673147'],\n)\n\n# Layout e título:\nfig.update_layout(\n    custom_layout,\n    title='&lt;b&gt;Tips by gender&lt;b&gt;', \n    title_x=0.1,\n    boxgap=0.75\n)\n\n# Resultado:\nfig.show()\n\n                                                \n\n\nMais categorias:\n\n# Criando o gráfico:\nfig = px.box(\n    tips,\n    y='total_bill',\n    color='day',\n    color_discrete_sequence = color_discrete_sequence\n)\n\n# Layout e título:\nfig.update_layout(\n    custom_layout,\n    title='&lt;b&gt;Total bill by day&lt;b&gt;', \n    title_x=0.1,\n    boxgap=0.7\n)\n# Marcador\nfig.update_traces(marker=custom_marker_style)\n\n# Resultado:\nfig.show()"
-  },
-  {
-    "objectID": "index.html#stripplot",
-    "href": "index.html#stripplot",
-    "title": "Visualização de dados com Plotly",
-    "section": "6. Stripplot",
-    "text": "6. Stripplot\n\n# Criando o gráfico:\nfig = px.strip(\n    tips,\n    y='tip',\n    color='day',\n    color_discrete_sequence = color_discrete_sequence\n)\n\n# Layout e título:\nfig.update_layout(\n    custom_layout,\n    title='&lt;b&gt;Tips by day&lt;b&gt;', \n    title_x=0.1\n)\n# Marcador\nfig.update_traces(marker=custom_marker_style)\n\n# Resultado:\nfig.show()\n\n                                                \n\n\n\n\n\n\n\n\nDica\n\n\n\nVocê pode usar a opção facet_col na criação dos gráficos e adicionar mais uma coluna (e.g., smoker), aumentando assim o nível de detalhe.\n\n\nNesse caso, o outro eixo do facet ficará com a linha do eixo e os ticks em preto. Logo, você pode usar:\n# Função para customizar os facets:\ndef update_facet_axes(fig):\n    # Atualizar todos os eixos de facetas\n    fig.update_xaxes(showgrid=False, showline=True, linecolor='lightgray', tickcolor='lightgray')\n    fig.update_yaxes(showgrid=False, showline=True, linecolor='lightgray', tickcolor='lightgray')\n    return fig\nComo exemplo de uso, teríamos:\n# Exemplo de uso:\nfig = update_facet_axes(fig)\nfig.show()"
-  },
-  {
-    "objectID": "index.html#mapa-de-calor-heatmap",
-    "href": "index.html#mapa-de-calor-heatmap",
-    "title": "Visualização de dados com Plotly",
-    "section": "7. Mapa de calor (heatmap)",
-    "text": "7. Mapa de calor (heatmap)\n\n# Calculando correlações para colunas numéricas\ncorr = tips.select_dtypes(include='number').corr(method='spearman')\n\n# Criando o gráfico:\nfig = px.imshow(corr, text_auto=True, color_continuous_scale='RdBu_r')\n\n# Layout e título:\nfig.update_layout(custom_layout, title='Heamap (matriz de correlação)', title_x=0.5)\n\n# Resuldado:\nfig.show()"
-  },
-  {
-    "objectID": "index.html#informações-sobre-o-autor",
-    "href": "index.html#informações-sobre-o-autor",
-    "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "# Informações sobre o autor",
-    "text": "# Informações sobre o autor\nVinícius Oviedo | Data Analyst & LaTeX editor"
-  },
-  {
-    "objectID": "assets/readme.html",
-    "href": "assets/readme.html",
-    "title": "",
-    "section": "",
-    "text": "Code\n\n\n\n\nfolder destined to images"
-  },
-  {
-    "objectID": "index.html#criação-da-estrutura",
-    "href": "index.html#criação-da-estrutura",
-    "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "Criação da estrutura",
-    "text": "Criação da estrutura\n\n\n\n\n\n\nDica\n\n\n\nAntes de criar os arquivos e o template em si, é interessante estruturar o projeto em pastas. Um exemplo:\n\n./figuras/\n./template/\n./conteudo/\n./pretextual/\n\n\n\nDentro da pasta ./template, vamos informar:\n% -- Identificação do template:\n\\NeedsTeXFormat{LaTeX2e}\n\\ProvidesClass{./template/&lt;nomeDoTemplate&gt;}\n% Classe base:\n\\LoadClass[a4paper,oneside,12pt]{article}\n\n\n\n\n\n\nNota\n\n\n\nNo momento de carregar essa classe com o comando \\documentclass, é importante informar o diretório.\n\n\n\\documentclass{./template/&lt;nomeDoTemplate&gt;}"
+    "text": "Dica\n\n\n\nAntes de criar os arquivos e o template em si, é interessante estruturar o projeto em pastas. Um exemplo:\n\n./figuras/\n./template/\n./conteudo/\n./pretextual/\n\n\n\nDentro da pasta ./template, vamos informar:\n% -- Identificação do template:\n\\NeedsTeXFormat{LaTeX2e}\n\\ProvidesClass{./template/&lt;nomeDoTemplate&gt;}\n% Classe base:\n\\LoadClass[a4paper,oneside,12pt]{article}\n\n\n\n\n\n\nNota\n\n\n\nNo momento de carregar essa classe com o comando \\documentclass, é importante informar o diretório.\n\n\n\\documentclass{./template/&lt;nomeDoTemplate&gt;}"
   },
   {
     "objectID": "index.html#formatação-básica",
@@ -102,7 +18,7 @@
     "href": "index.html#estilo-de-página-headerfooter",
     "title": "Classe ABNT com LaTeX (do zero)",
     "section": "Estilo de página (header/footer)",
-    "text": "Estilo de página (header/footer)\nPara o estilo da página, podemos criar um novo pagestyle com o pacote fancyhdr. No nosso caso, precisamos limpar o estilo padrão, configurar a numeração da página e retirar a linha padrão que vem no cabeçalho.\n% -- Estilo de página:\n\\RequirePackage{fancyhdr} % estilo próprio\n\\fancypagestyle{abnt}{\n  \\fancyhf{} \n  \\fancyhead[R]{\\footnotesize\\thepage}  % pagina na direita (topo)\n  \\renewcommand{\\headrulewidth}{0pt} % sem linha no header\n}\n\\pagestyle{abnt} % aplica como pagestyle principal"
+    "text": "Estilo de página (header/footer)\nPara o estilo da página, podemos criar um novo pagestyle com o pacote fancyhdr. No nosso caso, precisamos limpar o estilo padrão, configurar a numeração da página e retirar a linha padrão que vem no cabeçalho.\n% -- Estilo de página:\n\\RequirePackage{fancyhdr} % estilo próprio\n\\fancypagestyle{abnt}{\n  \\fancyhf{} \n  \\fancyhead[R]{\\footnotesize\\thepage}  % pagina na direita (topo)\n  \\renewcommand{\\headrulewidth}{0pt} % sem linha no header\n  \\setlength{\\headsep}{12pt}\n}\n\\pagestyle{abnt} % aplica como pagestyle principal"
   },
   {
     "objectID": "index.html#títulos",
@@ -112,11 +28,11 @@
     "text": "Títulos\nPara customizar os títulos (seções, subseções), utilizaremos o pacote titlesec. Quanto ao estilo, podemos utilizar:\n\\titleformat{\\section}{&lt;formato título&gt;}{&lt;formato num.&gt;}{&lt;espaço num./título&gt;}{}\n% e \n\\titlespacing{&lt;título&gt;}{&lt;espaço esquerda&gt;}{&lt;espaço antes&gt;}{&lt;espaço após&gt;}\n% -- Títulos:\n\\RequirePackage{titlesec}\n% Formato:\n\\titleformat{\\section} % Seção\n  {\\bfseries\\MakeUppercase}{\\thesection}{0.5em}{}\n\\titleformat{\\subsection} % Subseção\n  {\\MakeUppercase}{\\thesubsection}{0.5em}{}\n\\titleformat{\\subsubsection} % Sub-subseção\n  {\\bfseries}{\\thesubsubsection}{0.5em}{}\n% Espaçamento (títulos):\n\\titlespacing{\\section}{0pt}{12pt}{12pt}\n\\titlespacing{\\subsection}{0pt}{12pt}{6pt}\n\\titlespacing{\\subsubsection}{0pt}{21pt}{6pt}"
   },
   {
-    "objectID": "index.html#flots-e-legendas",
-    "href": "index.html#flots-e-legendas",
+    "objectID": "index.html#floats-e-legendas",
+    "href": "index.html#floats-e-legendas",
     "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "Flots e legendas",
-    "text": "Flots e legendas"
+    "section": "Floats e legendas",
+    "text": "Floats e legendas\nNo caso dos floats (figuras e tabelas), podemos carregar pacotes base e aqueles que eventualmente podemos precisar (e.g., longtable).\n% -- Floats:\n\\RequirePackage{float} % posicionamento\n\\RequirePackage{graphicx} % figuras\n\\RequirePackage{booktabs} % linhas horizontais\n\\RequirePackage{multirow,multicol} % células mescladas\n\\RequirePackage{adjustbox} % ajuste ao texto\n\\RequirePackage{longtable} % tabela múlti-páginas \n\\RequirePackage[flushleft]{threeparttable} % notas tabulares\n\\RequirePackage{tabularx}\n\\renewcommand{\\arraystretch}{1.5} % espaçamento tabelas\nSe precisarmos criar colunas com tamanho especificado (estilo p{&lt;medida&gt;}) mas alinhado ao centro ou à direita, o pacote array é bem útil.\n\\RequirePackage{array} % novos estilos de coluna\n% Coluna alinha ao centro (dimensão especificada):\n\\newcolumntype{C}[1]{&gt;{\\centering\\arraybackslash}m{#1}} \n% Coluna alinha à esquerda (dimensão especificada):\n\\newcolumntype{L}[1]{&gt;{\\raggedright\\arraybackslash}m{#1}}\n% Coluna alinha à direita (dimensão especificada):\n\\newcolumntype{R}[1]{&gt;{\\raggedleft\\arraybackslash}m{#1}}\nJá as legendas, podemos configurar de maneira global, ou separadamente para figuras e tabelas. Dessa forma, podemos alterar o estilo da fonte dos termos Figura e Tabela; o separador; o tamanho da fonte e o espaço entre caption e figura/tabela.\n% -- Legendas:\n\\RequirePackage{caption}\n\\captionsetup[figure]{labelfont=bf,labelsep=endash,size=small,skip=6pt}\n\\captionsetup[table]{labelfont=bf,labelsep=endash,size=small,skip=6pt}\nSe necessário, podemos criar o ambiente quadro (segundo a ABTN, tabelas com todas as bordas verticais e horizontais são denominadas quadros).\n% Definir um novo tipo de float chamado 'quadro'\n\\RequirePackage{newfloat}\n% Definição do novo float \"quadro\"\n\\DeclareFloatingEnvironment[\n    fileext=lod,\n    listname={Lista de Quadros},\n    name=Quadro,\n    placement=htbp\n]{quadro}\nLembremos de definir um estilo para a legenda do quadro:\n\\captionsetup[quadro]{labelfont=bf,labelsep=endash,size=small,skip=6pt}"
   },
   {
     "objectID": "index.html#pacotes-matemáticos",
@@ -137,21 +53,7 @@
     "href": "index.html#citações",
     "title": "Classe ABNT com LaTeX (do zero)",
     "section": "Citações",
-    "text": "Citações\nPara as citações e referências, vamos utilizar o pacote abntex2cite.\n% -- Citações e referências:\n\\RequirePackage[\n  alf,\n  abnt-repeated-title-omit=yes,\n  abnt-emphasize=bf,\n  abnt-etal-list=0\n]{abntex2cite}\n\\citebrackets()\n\\bibliographystyle{abntex2-alf}\nAo longo do texto, podemos utilizar algumas variações do comando \\cite.\n\n\n\nComando\nResultado\n\n\n\n\n\\cite{Oviedo2023}\n(Oviedo et al., 2023)\n\n\n\\citeonline{Oviedo2023}\nOviedo et al. (2023)\n\n\n\\citeauthor{Oviedo2023}\nOviedo et al.\n\n\n\\citeyear{Oviedo2023}\n2023"
-  },
-  {
-    "objectID": "index.html#elementos-pré-textuais",
-    "href": "index.html#elementos-pré-textuais",
-    "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "Elementos pré-textuais",
-    "text": "Elementos pré-textuais\n\nResumo\n\n\nSumário, Lista de Figuras, Lista de Tabelas e Lista de Quadros\n\n\nLista de abreviaturas/siglas\n\n\nCapa"
-  },
-  {
-    "objectID": "index.html#floats-e-legendas",
-    "href": "index.html#floats-e-legendas",
-    "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "Floats e legendas",
-    "text": "Floats e legendas\nNo caso dos floats (figuras e tabelas), podemos carregar pacotes base e aqueles que eventualmente podemos precisar (e.g., longtable).\n% -- Floats:\n\\RequirePackage{float} % posicionamento\n\\RequirePackage{graphicx} % figuras\n\\RequirePackage{booktabs} % linhas horizontais\n\\RequirePackage{multirow,multicol} % células mescladas\n\\RequirePackage{adjustbox} % ajuste ao texto\n\\RequirePackage{longtable} % tabela múlti-páginas \n\\RequirePackage[flushleft]{threeparttable} % notas tabulares\n\\RequirePackage{tabularx}\n\\renewcommand{\\arraystretch}{1.5} % espaçamento tabelas\nSe precisarmos criar colunas com tamanho especificado (estilo p{&lt;medida&gt;}) mas alinhado ao centro ou à direita, o pacote array é bem útil.\n\\RequirePackage{array} % novos estilos de coluna\n% Coluna alinha ao centro (dimensão especificada):\n\\newcolumntype{C}[1]{&gt;{\\centering\\arraybackslash}m{#1}} \n% Coluna alinha à esquerda (dimensão especificada):\n\\newcolumntype{L}[1]{&gt;{\\raggedright\\arraybackslash}m{#1}}\n% Coluna alinha à direita (dimensão especificada):\n\\newcolumntype{R}[1]{&gt;{\\raggedleft\\arraybackslash}m{#1}}\nJá as legendas, podemos configurar de maneira global, ou separadamente para figuras e tabelas. Dessa forma, podemos alterar o estilo da fonte dos termos Figura e Tabela; o separador; o tamanho da fonte e o espaço entre caption e figura/tabela.\n% -- Legendas:\n\\RequirePackage{caption}\n\\captionsetup[figure]{labelfont=bf,labelsep=endash,size=small,skip=6pt}\n\\captionsetup[table]{labelfont=bf,labelsep=endash,size=small,skip=6pt}\nSe necessário, podemos criar o ambiente quadro (segundo a ABTN, tabelas com todas as bordas verticais e horizontais são denominadas quadros).\n% Definir um novo tipo de float chamado 'quadro'\n\\floatstyle{plaintop}\n\\newfloat{quadro}{!ht}{lop}\n\\floatname{quadro}{Quadro}\n% Configurar a lista de quadros\n\\newcommand{\\listofquadros}{\n  \\listof{quadro}{Lista de Quadros}\n}"
+    "text": "Citações\nPara as citações e referências, vamos utilizar o pacote abntex2cite.\n% -- Citações e referências:\n\\RequirePackage[\n  alf,\n  abnt-repeated-title-omit=yes,\n  abnt-emphasize=bf,\n  abnt-etal-list=0\n]{abntex2cite}\n\\citebrackets()\n\\bibliographystyle{abntex2-alf}\n% citação direta:\n\\newenvironment{cited}\n{\\vspace{12pt}\\hfill\\begin{minipage}{12cm}}\n{\\end{minipage}\\vspace{12pt}}\nAo longo do texto, podemos utilizar algumas variações do comando \\cite.\n\n\n\nComando\nResultado\n\n\n\n\n\\cite{Oviedo2023}\n(Oviedo et al., 2023)\n\n\n\\citeonline{Oviedo2023}\nOviedo et al. (2023)\n\n\n\\citeauthor{Oviedo2023}\nOviedo et al.\n\n\n\\citeyear{Oviedo2023}\n2023"
   },
   {
     "objectID": "index.html#resumo",
@@ -165,20 +67,20 @@
     "href": "index.html#sumário-lista-de-figuras-lista-de-tabelas-e-lista-de-quadros",
     "title": "Classe ABNT com LaTeX (do zero)",
     "section": "Sumário, Lista de Figuras, Lista de Tabelas e Lista de Quadros",
-    "text": "Sumário, Lista de Figuras, Lista de Tabelas e Lista de Quadros"
+    "text": "Sumário, Lista de Figuras, Lista de Tabelas e Lista de Quadros\nAqui é um copia e cola mesmo, a desvantagem é a limitação ao editar a lista de quadros.\n% -- TOC, LOT, LOF, LOQ:\n\\RequirePackage{tocloft} % Pacote base\n\\setlength{\\cftbeforesecskip}{0pt}\n\\setlength{\\cftbeforesubsecskip}{0pt}\n% Sumário:\n\\renewcommand\\cfttoctitlefont{\\hfil\\centering\\bfseries\\MakeUppercase}\n%Seção:\n\\setlength{\\cftsecindent}{0pt}       % sem recuo\n\\setlength{\\cftsecnumwidth}{3.25em}     % espaço reservado p/ número da seção\n%Subseção:\n\\setlength{\\cftsubsecindent}{0pt}\n\\setlength{\\cftsubsecnumwidth}{3.25em} \n%Subsubseção:\n\\setlength{\\cftsubsubsecindent}{0pt}\n\\setlength{\\cftsubsubsecnumwidth}{3.25em} \n\\renewcommand{\\cftsecleader}{\\cftdotfill{\\cftdotsep}} % Define dots para as seções\n\n% Lista de Tabelas:\n\\renewcommand\\cftlottitlefont{\\hfil\\centering\\bfseries\\MakeUppercase}\n\\setlength{\\cfttabindent}{0pt}\n\\renewcommand{\\cfttabpresnum}{\\bfseries Tabela~}\n\\setlength{\\cfttabnumwidth}{5.1em}\n\\renewcommand{\\cfttabfont}{\\normalfont}\n\\renewcommand{\\cfttabpagefont}{\\normalfont}\n\\renewcommand{\\cfttabaftersnum}{\\ -- \\ }\n% Lista de Figuras:\n\\renewcommand\\cftloftitlefont{\\hfil\\centering\\bfseries\\MakeUppercase}\n\\setlength{\\cftfigindent}{0pt}\n\\renewcommand{\\cftfigpresnum}{\\bfseries Figura~}\n\\setlength{\\cftfignumwidth}{5.1em}\n\\renewcommand{\\cftfigfont}{\\normalfont}\n\\renewcommand{\\cftfigpagefont}{\\normalfont}\n\\renewcommand{\\cftfigaftersnum}{\\ -- \\ }"
   },
   {
     "objectID": "index.html#lista-de-abreviaturassiglas",
     "href": "index.html#lista-de-abreviaturassiglas",
     "title": "Classe ABNT com LaTeX (do zero)",
     "section": "Lista de abreviaturas/siglas",
-    "text": "Lista de abreviaturas/siglas"
+    "text": "Lista de abreviaturas/siglas\nNesse caso, vamos configurar com o pacote nomencl.\n% -- Configuração da Nomenclatura/Silgas\n\\RequirePackage{nomencl}\n\\makenomenclature\n\\renewcommand{\\nomname}{\\hfil Lista de abreviaturas e siglas}\n\\setlength{\\nomitemsep}{0pt}\n\\setlength{\\nomitemsep}{-\\parsep} \n\\setlength{\\nomlabelwidth}{5em} % espaço reservado para a sigla\nDessa maneira, podemos criar um arquivo siglas.tex no diretório dos elementos pré-textuais.\n% Lista de abreviaturas:\n\\nomenclature{QOD}{Quasi-one-dimension}\n\\nomenclature{SIGLA}{Descrição}\n\\nomenclature{SIGLA}{Descrição}\n\\nomenclature{SIGLA}{Descrição}\n\\printnomenclature\nE carregar via \\input:\n\\input{pretextual/siglas}\nCom tudo isso, podemos automatizar para aparecer logo após iniciar o ambiente Document:\n% no cls:\n\\AtBeginDocument{\n    % Sem numeração\n    \\pagenumbering{gobble}\n    %\n    \\printCapa\n    \\printContraCapa\n}\nJá no arquivo .tex principal, teremos:\n\\begin{document}\n\n% ---- Pré-Textual -----\n%\n\\input{pretextual/resumo}\n\\clearpage\n\\input{pretextual/siglas}\n\\clearpage\n\\tableofcontents\n\\clearpage\n\\listoftables\n\\clearpage\n\\listoffigures\n\\clearpage\n\\listofquadro\n\\clearpage\n% Com numeração\n\\pagenumbering{arabic}\n%\n%\n% ---- Textual -----\n\\section{Introdução}\n...\n\n\\end{document}"
   },
   {
-    "objectID": "index.html#capa",
-    "href": "index.html#capa",
-    "title": "Classe ABNT com LaTeX (do zero)",
-    "section": "Capa",
-    "text": "Capa"
+    "objectID": "assets/readme.html",
+    "href": "assets/readme.html",
+    "title": "",
+    "section": "",
+    "text": "Code\n\n\n\n\nfolder destined to images"
   }
 ]
