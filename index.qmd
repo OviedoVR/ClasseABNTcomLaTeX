@@ -379,24 +379,24 @@ Aqui é um copia e cola mesmo, a desvantagem é a limitação ao editar a lista 
 Nesse caso, vamos configurar com o pacote `nomencl`.
 
 ```latex
-% -- Configuração da Nomenclatura/Silgas
-\RequirePackage{nomencl}
-\makenomenclature
-\renewcommand{\nomname}{\hfil Lista de abreviaturas e siglas}
-\setlength{\nomitemsep}{0pt}
-\setlength{\nomitemsep}{-\parsep} 
-\setlength{\nomlabelwidth}{5em} % espaço reservado para a sigla
+% -- Configuração da Nomenclatura/Siglas:
+\newcommand{\abbrevtitle}{
+  \begin{center}
+     \MakeUppercase{\textbf{Lista de Abreviaturas e Siglas}}
+  \end{center}
+}
 ```
 
 Dessa maneira, podemos criar um arquivo `siglas.tex` no diretório dos elementos pré-textuais.
 
 ```latex
 % Lista de abreviaturas:
-\nomenclature{QOD}{Quasi-one-dimension}
-\nomenclature{SIGLA}{Descrição}
-\nomenclature{SIGLA}{Descrição}
-\nomenclature{SIGLA}{Descrição}
-\printnomenclature
+\abbrevtitle
+
+\begin{tabular}{ll}
+    QOD & Quasi-one-dimension \\
+    Sigla & Descrição
+\end{tabular}
 ```
 
 E carregar via `\input`:

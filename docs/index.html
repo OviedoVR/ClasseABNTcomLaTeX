@@ -176,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2 de outubro de 2025</p>
+      <p class="date">21 de outubro de 2025</p>
     </div>
   </div>
   
@@ -515,20 +515,20 @@ Nota
 <section id="lista-de-abreviaturassiglas" class="level2">
 <h2 class="anchored" data-anchor-id="lista-de-abreviaturassiglas">Lista de abreviaturas/siglas</h2>
 <p>Nesse caso, vamos configurar com o pacote <code>nomencl</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">% -- Configuração da Nomenclatura/Silgas</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\RequirePackage</span>{nomencl}</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\makenomenclature</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\renewcommand</span>{<span class="ex">\nomname</span>}{<span class="fu">\hfil</span> Lista de abreviaturas e siglas}</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\setlength</span>{<span class="fu">\nomitemsep</span>}{0pt}</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\setlength</span>{<span class="fu">\nomitemsep</span>}{-<span class="fu">\parsep</span>} </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">\setlength</span>{<span class="fu">\nomlabelwidth</span>}{5em} <span class="co">% espaço reservado para a sigla</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">% -- Configuração da Nomenclatura/Siglas:</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\abbrevtitle</span>}{</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">\begin</span>{<span class="ex">center</span>}</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">\MakeUppercase</span>{<span class="fu">\textbf</span>{Lista de Abreviaturas e Siglas}}</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">\end</span>{<span class="ex">center</span>}</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Dessa maneira, podemos criar um arquivo <code>siglas.tex</code> no diretório dos elementos pré-textuais.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Lista de abreviaturas:</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\nomenclature</span>{QOD}{Quasi-one-dimension}</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\nomenclature</span>{SIGLA}{Descrição}</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\nomenclature</span>{SIGLA}{Descrição}</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\nomenclature</span>{SIGLA}{Descrição}</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\printnomenclature</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\abbrevtitle</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tabular</span>}{ll}</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    QOD <span class="op">&amp;</span> Quasi-one-dimension <span class="fu">\\</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    Sigla <span class="op">&amp;</span> Descrição</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tabular</span>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E carregar via <code>\input</code>:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\input</span>{pretextual/siglas}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Com tudo isso, podemos automatizar para aparecer logo após iniciar o ambiente <code>Document</code>:</p>
@@ -1432,24 +1432,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb28-379"><a href="#cb28-379" aria-hidden="true" tabindex="-1"></a>Nesse caso, vamos configurar com o pacote <span class="in">`nomencl`</span>.</span>
 <span id="cb28-380"><a href="#cb28-380" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-381"><a href="#cb28-381" aria-hidden="true" tabindex="-1"></a><span class="in">```latex</span></span>
-<span id="cb28-382"><a href="#cb28-382" aria-hidden="true" tabindex="-1"></a><span class="in">% -- Configuração da Nomenclatura/Silgas</span></span>
-<span id="cb28-383"><a href="#cb28-383" aria-hidden="true" tabindex="-1"></a><span class="in">\RequirePackage{nomencl}</span></span>
-<span id="cb28-384"><a href="#cb28-384" aria-hidden="true" tabindex="-1"></a><span class="in">\makenomenclature</span></span>
-<span id="cb28-385"><a href="#cb28-385" aria-hidden="true" tabindex="-1"></a><span class="in">\renewcommand{\nomname}{\hfil Lista de abreviaturas e siglas}</span></span>
-<span id="cb28-386"><a href="#cb28-386" aria-hidden="true" tabindex="-1"></a><span class="in">\setlength{\nomitemsep}{0pt}</span></span>
-<span id="cb28-387"><a href="#cb28-387" aria-hidden="true" tabindex="-1"></a><span class="in">\setlength{\nomitemsep}{-\parsep} </span></span>
-<span id="cb28-388"><a href="#cb28-388" aria-hidden="true" tabindex="-1"></a><span class="in">\setlength{\nomlabelwidth}{5em} % espaço reservado para a sigla</span></span>
-<span id="cb28-389"><a href="#cb28-389" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb28-390"><a href="#cb28-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-391"><a href="#cb28-391" aria-hidden="true" tabindex="-1"></a>Dessa maneira, podemos criar um arquivo <span class="in">`siglas.tex`</span> no diretório dos elementos pré-textuais.</span>
-<span id="cb28-392"><a href="#cb28-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-393"><a href="#cb28-393" aria-hidden="true" tabindex="-1"></a><span class="in">```latex</span></span>
-<span id="cb28-394"><a href="#cb28-394" aria-hidden="true" tabindex="-1"></a><span class="in">% Lista de abreviaturas:</span></span>
-<span id="cb28-395"><a href="#cb28-395" aria-hidden="true" tabindex="-1"></a><span class="in">\nomenclature{QOD}{Quasi-one-dimension}</span></span>
-<span id="cb28-396"><a href="#cb28-396" aria-hidden="true" tabindex="-1"></a><span class="in">\nomenclature{SIGLA}{Descrição}</span></span>
-<span id="cb28-397"><a href="#cb28-397" aria-hidden="true" tabindex="-1"></a><span class="in">\nomenclature{SIGLA}{Descrição}</span></span>
-<span id="cb28-398"><a href="#cb28-398" aria-hidden="true" tabindex="-1"></a><span class="in">\nomenclature{SIGLA}{Descrição}</span></span>
-<span id="cb28-399"><a href="#cb28-399" aria-hidden="true" tabindex="-1"></a><span class="in">\printnomenclature</span></span>
+<span id="cb28-382"><a href="#cb28-382" aria-hidden="true" tabindex="-1"></a><span class="in">% -- Configuração da Nomenclatura/Siglas:</span></span>
+<span id="cb28-383"><a href="#cb28-383" aria-hidden="true" tabindex="-1"></a><span class="in">\newcommand{\abbrevtitle}{</span></span>
+<span id="cb28-384"><a href="#cb28-384" aria-hidden="true" tabindex="-1"></a><span class="in">  \begin{center}</span></span>
+<span id="cb28-385"><a href="#cb28-385" aria-hidden="true" tabindex="-1"></a><span class="in">     \MakeUppercase{\textbf{Lista de Abreviaturas e Siglas}}</span></span>
+<span id="cb28-386"><a href="#cb28-386" aria-hidden="true" tabindex="-1"></a><span class="in">  \end{center}</span></span>
+<span id="cb28-387"><a href="#cb28-387" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb28-388"><a href="#cb28-388" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb28-389"><a href="#cb28-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-390"><a href="#cb28-390" aria-hidden="true" tabindex="-1"></a>Dessa maneira, podemos criar um arquivo <span class="in">`siglas.tex`</span> no diretório dos elementos pré-textuais.</span>
+<span id="cb28-391"><a href="#cb28-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-392"><a href="#cb28-392" aria-hidden="true" tabindex="-1"></a><span class="in">```latex</span></span>
+<span id="cb28-393"><a href="#cb28-393" aria-hidden="true" tabindex="-1"></a><span class="in">% Lista de abreviaturas:</span></span>
+<span id="cb28-394"><a href="#cb28-394" aria-hidden="true" tabindex="-1"></a><span class="in">\abbrevtitle</span></span>
+<span id="cb28-395"><a href="#cb28-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-396"><a href="#cb28-396" aria-hidden="true" tabindex="-1"></a><span class="in">\begin{tabular}{ll}</span></span>
+<span id="cb28-397"><a href="#cb28-397" aria-hidden="true" tabindex="-1"></a><span class="in">    QOD &amp; Quasi-one-dimension \\</span></span>
+<span id="cb28-398"><a href="#cb28-398" aria-hidden="true" tabindex="-1"></a><span class="in">    Sigla &amp; Descrição</span></span>
+<span id="cb28-399"><a href="#cb28-399" aria-hidden="true" tabindex="-1"></a><span class="in">\end{tabular}</span></span>
 <span id="cb28-400"><a href="#cb28-400" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb28-401"><a href="#cb28-401" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-402"><a href="#cb28-402" aria-hidden="true" tabindex="-1"></a>E carregar via <span class="in">`\input`</span>:</span>
